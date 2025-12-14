@@ -85,98 +85,43 @@
     }
 
     /* Караоке */
-.karaoke {
-  background: rgba(5, 0, 20, 0.85);
-  font-family: 'Arial', monospace;
-  max-height: 200px;
-  overflow-y: auto;
-  padding: 15px;
-  border-radius: 16px;
-  
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
-}
+    .karaoke {
+      background: rgba(5, 0, 20, 0.85);
+      font-family: 'Arial', monospace;
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 15px;
+      border-radius: 16px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
 
+    .karaoke::-webkit-scrollbar {
+      display: none;
+    }
 
-.karaoke::-webkit-scrollbar {
-  display: none;
-}
+    .karaoke-line {
+      opacity: 0.4;
+      color: #a0a0ff;
+      padding: 6px 0;
+      font-size: 1.15rem;
+      transition: opacity 0.6s ease, color 0.6s ease, transform 0.6s ease;
+      transform: translateY(5px);
+    }
 
-.karaoke-line {
-  opacity: 0.4;
-  color: #a0a0ff;
-  padding: 6px 0;
-  font-size: 1.15rem;
-  transition: 
-    opacity 0.6s ease,
-    color 0.6s ease,
-    transform 0.6s ease;
-  transform: translateY(5px);
-}
-
-.karaoke-line.active {
-  opacity: 1;
-  color: #ff69b4;
-  transform: translateY(0);
-  text-shadow: 0 0 10px rgba(255, 105, 180, 0.9);
-  font-weight: bold;
-  transition:
-    opacity 0.5s ease,
-    color 0.5s ease,
-    transform 0.5s ease;
-}
+    .karaoke-line.active {
+      opacity: 1;
+      color: #ff69b4;
+      transform: translateY(0);
+      text-shadow: 0 0 10px rgba(255, 105, 180, 0.9);
+      font-weight: bold;
+    }
 
     .secret {
       background: rgba(10, 0, 30, 0.9);
       border: 2px solid #00f7ff;
       animation: pulseGlow 2s infinite alternate;
       display: none;
-    }
-
-     /* Кнопка полива */
-    #waterBtn {
-      position: fixed;
-      bottom: 140px;
-      right: 20px;
-      background: rgba(0, 200, 255, 0.3);
-      border: 2px solid #00f7ff;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      cursor: pointer;
-      font-size: 24px;
-      color: white;
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(4px);
-      transition: transform 0.2s, background 0.3s;
-    }
-
-    #waterBtn:hover {
-      transform: scale(1.15);
-      background: rgba(0, 200, 255, 0.5);
-    }
-
-    .drop {
-      position: absolute;
-      font-size: 20px;
-      opacity: 0;
-      z-index: 15;
-      pointer-events: none;
-      animation: fall 1.5s forwards;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(0) translateX(0);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100px) translateX(calc(20px * (var(--dx) - 0.5)));
-        opacity: 0;
-      }
     }
 
     @keyframes pulseGlow {
@@ -281,12 +226,55 @@
       }
     }
 
-    
-    .karaoke {
-      scroll-behavior: smooth;
+    /* Кнопка полива */
+    #waterBtn {
+      position: fixed;
+      bottom: 140px;
+      right: 20px;
+      background: rgba(0, 200, 255, 0.3);
+      border: 2px solid #00f7ff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      font-size: 24px;
+      color: white;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      transition: transform 0.2s, background 0.3s;
     }
 
-      #garden-counter {
+    #waterBtn:hover {
+      transform: scale(1.15);
+      background: rgba(0, 200, 255, 0.5);
+    }
+
+    /* Капли воды */
+    .drop {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0;
+      z-index: 15;
+      pointer-events: none;
+      animation: fall 1.5s forwards;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100px) translateX(calc(20px * (var(--dx) - 0.5)));
+        opacity: 0;
+      }
+    }
+
+    /* Подпись под садом */
+    #garden-counter {
       position: fixed;
       bottom: 10px;
       left: 0;
@@ -295,7 +283,7 @@
       font-size: 0.9rem;
       z-index: 10;
       text-shadow: 0 0 4px rgba(0,0,0,0.8);
-    }    
+    }
   </style>
 </head>
 <body>
@@ -329,12 +317,12 @@
     <!-- Караоке -->
     <div class="karaoke" id="karaokeBlock" style="display: none;">
       <p style="color: #00f7ff; margin-bottom: 10px; font-size: 1.2rem;">🎤 Текст трека:</p>
-      <div class="karaoke-line" data-time="19.0">На каких планетах только ни бывал</div>
-      <div class="karaoke-line" data-time="21.0">Симпатичней девочки с Земли я ещё не видал</div>
-      <div class="karaoke-line" data-time="24.0">Ради неё я выжигаю круги на полях</div>
-      <div class="karaoke-line" data-time="26.0">Девочка с планеты Земля, прошу, заметь меня</div>
-      <div class="karaoke-line" data-time="29.0">Но её взгляды мимо. Как привлечь мне внимание?</div>
-      <div class="karaoke-line" data-time="31.0">Я схожу с ума, ты само обаяние</div>
+      <div class="karaoke-line" data-time="20.0">На каких планетах только ни бывал</div>
+      <div class="karaoke-line" data-time="22.0">Симпатичней девочки с Земли я ещё не видал</div>
+      <div class="karaoke-line" data-time="25.0">Ради неё я выжигаю круги на полях</div>
+      <div class="karaoke-line" data-time="27.0">Девочка с планеты Земля, прошу, заметь меня</div>
+      <div class="karaoke-line" data-time="30.0">Но её взгляды мимо. Как привлечь мне внимание?</div>
+      <div class="karaoke-line" data-time="32.0">Я схожу с ума, ты само обаяние</div>
       <div class="karaoke-line" data-time="33.0">Как к ней поступиться? Ей выскажу мысли</div>
       <div class="karaoke-line" data-time="36.0">О боже, мой вид вызвал в ней рвотный приступ! О нет</div>
       <div class="karaoke-line" data-time="39.0">Почему в твоих глазах горит испуг?</div>
@@ -348,20 +336,20 @@
       <div class="karaoke-line" data-time="57.0">"Стой, где стоишь, не подходи!</div>
       <div class="karaoke-line" data-time="59.0">Меня пугает твой хитин!"</div>
       <div class="karaoke-line" data-time="61.0">Я хотел провалиться в землю</div>
-      <div class="karaoke-line" data-time="64.0">И со стыда сгорев, уйти</div>
-      <div class="karaoke-line" data-time="66.0">Межпланетная любовь — она загадка</div>
-      <div class="karaoke-line" data-time="68.0">Он изучит мир людей и их повадки</div>
-      <div class="karaoke-line" data-time="71.0">Но что ждёт его теперь — понять несложно</div>
-      <div class="karaoke-line" data-time="73.0">Межпланетная любовь — это невозможно</div>
-      <div class="karaoke-line" data-time="75.0">Межпланетная любовь — она загадка</div>
-      <div class="karaoke-line" data-time="78.0">Он изучит мир людей и их повадки</div>
-      <div class="karaoke-line" data-time="80.0">Но что ждёт его теперь — понять несложно</div>
-      <div class="karaoke-line" data-time="82.0">Межпланетная любовь — это невозможно</div>
-      <div class="karaoke-line" data-time="85.0">В её глазах тону</div>
-      <div class="karaoke-line" data-time="87.0">Я украсил небо её именем во всю Луну</div>
-      <div class="karaoke-line" data-time="90.0">Чтобы тронуть душу этим струну</div>
-      <div class="karaoke-line" data-time="92.0">Взгляни наверх, вот мой комплимент (у-е-е)</div>
-      <div class="karaoke-line" data-time="94.0">Вот что услышал я в ответ</div>
+      <div class="karaoke-line" data-time="65.0">И со стыда сгорев, уйти</div>
+      <div class="karaoke-line" data-time="67.0">Межпланетная любовь — она загадка</div>
+      <div class="karaoke-line" data-time="69.0">Он изучит мир людей и их повадки</div>
+      <div class="karaoke-line" data-time="72.0">Но что ждёт его теперь — понять несложно</div>
+      <div class="karaoke-line" data-time="74.0">Межпланетная любовь — это невозможно</div>
+      <div class="karaoke-line" data-time="76.0">Межпланетная любовь — она загадка</div>
+      <div class="karaoke-line" data-time="79.0">Он изучит мир людей и их повадки</div>
+      <div class="karaoke-line" data-time="81.0">Но что ждёт его теперь — понять несложно</div>
+      <div class="karaoke-line" data-time="83.0">Межпланетная любовь — это невозможно</div>
+      <div class="karaoke-line" data-time="86.0">В её глазах тону</div>
+      <div class="karaoke-line" data-time="88.0">Я украсил небо её именем во всю Луну</div>
+      <div class="karaoke-line" data-time="91.0">Чтобы тронуть душу этим струну</div>
+      <div class="karaoke-line" data-time="93.0">Взгляни наверх, вот мой комплимент (у-е-е)</div>
+      <div class="karaoke-line" data-time="95.0">Вот что услышал я в ответ</div>
       <div class="karaoke-line" data-time="98.0">"Ты сумасшедший или нет?!</div>
       <div class="karaoke-line" data-time="100.0">Тот бледный лунный свет для всех</div>
       <div class="karaoke-line" data-time="103.0">Сияет миллиарды лет!" (Хм-м-м)</div>
@@ -424,12 +412,13 @@
       🎁 <strong>Финальный подарок для тебя:</strong><br><br>
       Твой личный код на донат в игру:<br>
       <span style="font-size:1.4rem; color:#00f7ff; font-weight:bold; letter-spacing:3px;">
-        RA-EAYQGWVE565WXPBA
+        L4PK4-LOV3-2025
       </span><br><br>
       Играй, побеждай — и знай, что я всегда за тебя болею. ❤️
     </div>
   </div>
 
+  <!-- Сад -->
   <div id="garden" style="
     position: fixed;
     bottom: 40px;
@@ -444,10 +433,12 @@
     gap: 30px;
   "></div>
 
+  <!-- Подпись -->
   <div id="garden-counter"></div>
-  
+
+  <!-- Кнопка полива -->
   <div id="waterBtn">💧</div>
-  
+
   <script>
     // --- Звёзды ---
     function createStars() {
@@ -465,7 +456,7 @@
       }
     }
 
-    
+    // --- Основные элементы ---
     const playBtn = document.getElementById('playBtn');
     const audioSection = document.getElementById('audioSection');
     const myAudio = document.getElementById('myAudio');
@@ -492,53 +483,44 @@
       setInterval(createHeart, 350);
     }
 
-    
-   function startKaraoke() {
-  const lines = document.querySelectorAll('.karaoke-line');
-  const karaokeContainer = document.querySelector('.karaoke');
-  let lastActive = null;
+    // --- Караоке ---
+    function startKaraoke() {
+      const lines = document.querySelectorAll('.karaoke-line');
+      const karaokeContainer = document.querySelector('.karaoke');
+      let lastActive = null;
 
-  myAudio.addEventListener('timeupdate', () => {
-    const time = myAudio.currentTime;
-    let activeLine = null;
+      myAudio.addEventListener('timeupdate', () => {
+        const time = myAudio.currentTime;
+        let activeLine = null;
 
-    
-    for (let i = lines.length - 1; i >= 0; i--) {
-      if (time >= parseFloat(lines[i].dataset.time)) {
-        activeLine = lines[i];
-        break;
-      }
+        for (let i = lines.length - 1; i >= 0; i--) {
+          if (time >= parseFloat(lines[i].dataset.time)) {
+            activeLine = lines[i];
+            break;
+          }
+        }
+
+        if (lastActive) lastActive.classList.remove('active');
+        if (activeLine) {
+          activeLine.classList.add('active');
+          lastActive = activeLine;
+
+          const containerRect = karaokeContainer.getBoundingClientRect();
+          const lineRect = activeLine.getBoundingClientRect();
+          const isVisible = lineRect.top >= containerRect.top && lineRect.bottom <= containerRect.bottom;
+
+          if (!isVisible) {
+            const targetScroll = activeLine.offsetTop - karaokeContainer.clientHeight / 2 + activeLine.offsetHeight / 2;
+            karaokeContainer.scrollTo({
+              top: targetScroll,
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
     }
 
-    
-    if (lastActive) lastActive.classList.remove('active');
-    if (activeLine) {
-      activeLine.classList.add('active');
-      lastActive = activeLine;
-
-      
-      const containerRect = karaokeContainer.getBoundingClientRect();
-      const lineRect = activeLine.getBoundingClientRect();
-      const isVisible = lineRect.top >= containerRect.top && lineRect.bottom <= containerRect.bottom;
-
-      if (!isVisible) {
-        
-        const scrollTop = karaokeContainer.scrollTop;
-        const lineOffsetTop = activeLine.offsetTop;
-        const containerHeight = karaokeContainer.clientHeight;
-        const targetScroll = lineOffsetTop - containerHeight / 2 + activeLine.offsetHeight / 2;
-
-        
-        karaokeContainer.scrollTo({
-          top: targetScroll,
-          behavior: 'smooth'
-        });
-      }
-    }
-  });
-}
-
-    
+    // --- Запуск по кнопке ---
     playBtn.addEventListener('click', () => {
       myAudio.play().then(() => {
         playBtn.style.display = 'none';
@@ -553,13 +535,13 @@
       });
     });
 
-    
+    // --- Секрет после конца трека ---
     myAudio.addEventListener('ended', () => {
       secretMessage.style.display = 'block';
       secretMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
- // === 🌸 САД, КОТОРЫЙ РАСТЁТ ПРИ КАЖДОМ ЗАХОДЕ ===
+    // === 🌸 САД, КОТОРЫЙ РАСТЁТ ПРИ КАЖДОМ ЗАХОДЕ ===
     (function() {
       const garden = document.getElementById('garden');
       const counter = document.getElementById('garden-counter');
@@ -612,18 +594,19 @@
         }, i * 150);
       }
 
-      
+      // Маленькая радость: +1 цветок при поливе!
       const visitsKey = 'love_garden_visits';
       let visits = parseInt(localStorage.getItem(visitsKey)) || 0;
       visits++;
       localStorage.setItem(visitsKey, visits);
-     
+      // Перезапустим сад через 1.5 сек (после дождя)
       setTimeout(() => {
         const event = new Event('reloadGarden');
         document.dispatchEvent(event);
       }, 1600);
     });
 
+    // Перезагрузка сада после полива
     document.addEventListener('reloadGarden', () => {
       const garden = document.getElementById('garden');
       const counter = document.getElementById('garden-counter');
@@ -649,10 +632,9 @@
         }, 100);
       }
     });
-    
+
+    // --- Инициализация ---
     createStars();
   </script>
 </body>
 </html>
-
-
