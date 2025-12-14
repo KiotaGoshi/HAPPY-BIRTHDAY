@@ -133,6 +133,52 @@
       display: none;
     }
 
+     /* Кнопка полива */
+    #waterBtn {
+      position: fixed;
+      bottom: 140px;
+      right: 20px;
+      background: rgba(0, 200, 255, 0.3);
+      border: 2px solid #00f7ff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      font-size: 24px;
+      color: white;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    #waterBtn:hover {
+      transform: scale(1.15);
+      background: rgba(0, 200, 255, 0.5);
+    }
+
+    .drop {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0;
+      z-index: 15;
+      pointer-events: none;
+      animation: fall 1.5s forwards;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100px) translateX(calc(20px * (var(--dx) - 0.5)));
+        opacity: 0;
+      }
+    }
+
     @keyframes pulseGlow {
       from { box-shadow: 0 0 10px #00f7ff; }
       to { box-shadow: 0 0 25px #00f7ff, 0 0 40px #ff00ff; }
@@ -239,6 +285,17 @@
     .karaoke {
       scroll-behavior: smooth;
     }
+
+      #garden-counter {
+      position: fixed;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+      z-index: 10;
+      text-shadow: 0 0 4px rgba(0,0,0,0.8);
+    }    
   </style>
 </head>
 <body>
@@ -373,6 +430,24 @@
     </div>
   </div>
 
+  <div id="garden" style="
+    position: fixed;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    pointer-events: none;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 30px;
+  "></div>
+
+  <div id="garden-counter"></div>
+  
+  <div id="waterBtn">💧</div>
+  
   <script>
     // --- Звёзды ---
     function createStars() {
@@ -484,9 +559,100 @@
       secretMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
+ // === 🌸 САД, КОТОРЫЙ РАСТЁТ ПРИ КАЖДОМ ЗАХОДЕ ===
+    (function() {
+      const garden = document.getElementById('garden');
+      const counter = document.getElementById('garden-counter');
+      const visitsKey = 'love_garden_visits';
+      const flowers = ['🌸', '🌷', '🌹', '💐', '🌼', '🌺', '🌻', '💮', '🪷', '🪻'];
+
+      // Каждый заход = +1 (даже 10 раз в день)
+      let visits = parseInt(localStorage.getItem(visitsKey)) || 0;
+      visits++;
+      localStorage.setItem(visitsKey, visits);
+
+      // Обновляем подпись
+      counter.textContent = `Ты заходила сюда ${visits} раз. Сад растёт, пока ты помнишь.`;
+
+      // Очищаем старые цветы
+      garden.innerHTML = '';
+
+      // Создаём до 20 цветов
+      const flowerCount = Math.min(visits, 20);
+      for (let i = 0; i < flowerCount; i++) {
+        const flower = document.createElement('div');
+        flower.innerHTML = flowers[i % flowers.length];
+        flower.style.fontSize = `${16 + i * 2}px`;
+        flower.style.opacity = '0';
+        flower.style.transform = 'translateY(20px)';
+        flower.style.transition = `opacity 1.2s ease ${i * 0.2}s, transform 1.2s ease ${i * 0.2}s`;
+        garden.appendChild(flower);
+
+        setTimeout(() => {
+          flower.style.opacity = '0.95';
+          flower.style.transform = 'translateY(0)';
+        }, 100);
+      }
+    })();
+
+    // === 💧 АНИМАЦИЯ ПОЛИВА ===
+    document.getElementById('waterBtn').addEventListener('click', () => {
+      const drops = 8;
+      for (let i = 0; i < drops; i++) {
+        setTimeout(() => {
+          const drop = document.createElement('div');
+          drop.innerHTML = '💧';
+          drop.classList.add('drop');
+          drop.style.left = `${90 + Math.random() * 20}vw`;
+          drop.style.top = '120px';
+          drop.style.setProperty('--dx', Math.random());
+          document.body.appendChild(drop);
+
+          setTimeout(() => drop.remove(), 1600);
+        }, i * 150);
+      }
+
+      
+      const visitsKey = 'love_garden_visits';
+      let visits = parseInt(localStorage.getItem(visitsKey)) || 0;
+      visits++;
+      localStorage.setItem(visitsKey, visits);
+     
+      setTimeout(() => {
+        const event = new Event('reloadGarden');
+        document.dispatchEvent(event);
+      }, 1600);
+    });
+
+    document.addEventListener('reloadGarden', () => {
+      const garden = document.getElementById('garden');
+      const counter = document.getElementById('garden-counter');
+      const visitsKey = 'love_garden_visits';
+      const flowers = ['🌸', '🌷', '🌹', '💐', '🌼', '🌺', '🌻', '💮', '🪷', '🪻'];
+
+      let visits = parseInt(localStorage.getItem(visitsKey)) || 0;
+      counter.textContent = `Ты заходила сюда ${visits} раз. Сад растёт, пока ты помнишь.`;
+
+      garden.innerHTML = '';
+      const flowerCount = Math.min(visits, 20);
+      for (let i = 0; i < flowerCount; i++) {
+        const flower = document.createElement('div');
+        flower.innerHTML = flowers[i % flowers.length];
+        flower.style.fontSize = `${16 + i * 2}px`;
+        flower.style.opacity = '0';
+        flower.style.transform = 'translateY(20px)';
+        flower.style.transition = `opacity 1.2s ease ${i * 0.2}s, transform 1.2s ease ${i * 0.2}s`;
+        garden.appendChild(flower);
+        setTimeout(() => {
+          flower.style.opacity = '0.95';
+          flower.style.transform = 'translateY(0)';
+        }, 100);
+      }
+    });
     
     createStars();
   </script>
 </body>
 </html>
+
 
